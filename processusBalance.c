@@ -1,10 +1,10 @@
-//processusBras
+//processusBalance
 //Historique: 
 // 21/11/2024, Josee Girard, creation
 
 //INCLUSIONS
 #include "main.h"
-#include "piloteSerieUSB.h"
+#include "piloteSerieUSB_Balance.h"
 #include "interfaceBalance.h"
 
 

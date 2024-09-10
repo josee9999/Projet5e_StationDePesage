@@ -24,18 +24,18 @@ unsigned char interfaceUArm_reponse[INTERFACEUARM_LONGUEUR_MAXIMALE_DES_REPONSES
 int interfaceUArm_ecritUneCommande(char *Commande, unsigned char Longueur)
 {
   int retour;
-  retour = piloteSerieUSB_ecrit(Commande, Longueur);
+  retour = piloteSerieUSB_Bras_ecrit(Commande, Longueur);
   if (retour != (int)Longueur)
   {
     return -1;
   }
-  piloteSerieUSB_attendLaFinDeLEcriture();
+  piloteSerieUSB_Bras_attendLaFinDeLEcriture();
   return retour;
 }
 
 int interfaceUArm_recoitUneReponse(char *cReponse, unsigned char ucLongueurMaximale)
 {
-	return piloteSerieUSB_lit(cReponse, ucLongueurMaximale);  
+	return piloteSerieUSB_Bras_lit(cReponse, ucLongueurMaximale);  
 }
 
 //Definitions de variables publiques:
@@ -66,7 +66,7 @@ int interfaceUArm_BougePosition(int iX, int iY, int iZ)
 {
   char cPosition[30];
   sprintf(cPosition, "G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); 
-  printf("G0 X%d Y%d Z%d F10000\n", iX, iY, iZ);
+  printf("G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); //A enlever
   return interfaceUArm_ecritUneCommande(cPosition, 29);
 }
 
@@ -74,7 +74,7 @@ int interfaceUArm_BougePosition_FeedbackPossible(int iNumero, int iX, int iY, in
 {
   char cPosition[32];
   sprintf(cPosition, "#%d G0 X%d Y%d Z%d F10000\n",iNumero, iX, iY, iZ); 
-  printf("\n#%d G0 X%d Y%d Z%d F10000\n",iNumero, iX, iY, iZ); 
+  printf("\n#%d G0 X%d Y%d Z%d F10000\n",iNumero, iX, iY, iZ); //a enlever
   return interfaceUArm_ecritUneCommande(cPosition, (sizeof(cPosition)-1));
 }
 

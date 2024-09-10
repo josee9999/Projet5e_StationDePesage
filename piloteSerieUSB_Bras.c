@@ -21,9 +21,9 @@
 //pas de fonctions privees
 
 //Definitions de variables privees:
-int piloteSerieUSB_fichier;
-struct termios piloteSerieUSB_configuration;
-int fd_portUART;
+int piloteSerieUSB_Bras_fichier;
+struct termios piloteSerieUSB_Bras_configuration;
+int fd_portUART_Bras;
 //Definitions de fonctions privees:
 //pas de fonctions privees
 
@@ -118,12 +118,12 @@ int piloteSerieUSB_Bras_initialise(void)
   return 0;*/
   
   // Ouverture du port série 
-  piloteSerieUSB_fichier = open(PILOTESERIEUSB_TTY0, O_RDWR | O_NOCTTY | O_NDELAY);
-  if (piloteSerieUSB_fichier == -1)
+  piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY0, O_RDWR | O_NOCTTY | O_NDELAY);
+  if (piloteSerieUSB_Bras_fichier == -1)
   {
-    piloteSerieUSB_fichier = open(PILOTESERIEUSB_TTY1, O_RDWR | O_NOCTTY | O_NDELAY);
+    piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY1, O_RDWR | O_NOCTTY | O_NDELAY);
     
-    if (piloteSerieUSB_fichier == -1)
+    if (piloteSerieUSB_Bras_fichier == -1)
     {
       perror("Erreur! Ouverture de port");
       return EXIT_FAILURE;
@@ -131,7 +131,7 @@ int piloteSerieUSB_Bras_initialise(void)
   }
   
   struct termios SerialPortSettings; // Create the structure 
-  tcgetattr(piloteSerieUSB_fichier, &SerialPortSettings); // Get the current attributes of the Serial port
+  tcgetattr(piloteSerieUSB_Bras_fichier, &SerialPortSettings); // Get the current attributes of the Serial port
 
   // Setting the Baud rate
   cfsetispeed(&SerialPortSettings, B115200); // Set Read Speed   
@@ -155,7 +155,7 @@ int piloteSerieUSB_Bras_initialise(void)
   SerialPortSettings.c_cc[VTIME] = 0; // Wait 10 sec (0 for indefinitely) 
 
   // Set the attributes to the termios structure
-  if (tcsetattr(piloteSerieUSB_fichier, TCSANOW, &SerialPortSettings) != 0) 
+  if (tcsetattr(piloteSerieUSB_Bras_fichier, TCSANOW, &SerialPortSettings) != 0) 
   {
     perror("Erreur! configuration des attributs du port serie");
     exit(EXIT_FAILURE);
@@ -167,8 +167,8 @@ int piloteSerieUSB_Bras_initialise(void)
 int piloteSerieUSB_Bras_termine(void)
 {
   
-  tcflush(piloteSerieUSB_fichier, TCIOFLUSH);   
-  close(piloteSerieUSB_fichier);
+  tcflush(piloteSerieUSB_Bras_fichier, TCIOFLUSH);   
+  close(piloteSerieUSB_Bras_fichier);
   return 0;
 }
 
@@ -177,19 +177,19 @@ int piloteSerieUSB_Bras_termine(void)
 int piloteSerieUSB_Bras_ecrit(char *Source, unsigned char NombreATransmettre)
 {
   sleep(1);
-  tcflush(piloteSerieUSB_fichier, TCOFLUSH);  
+  tcflush(piloteSerieUSB_Bras_fichier, TCOFLUSH);  
   sleep(1);//ajout pour test
-  return (int)write(piloteSerieUSB_fichier,Source, NombreATransmettre);
+  return (int)write(piloteSerieUSB_Bras_fichier,Source, NombreATransmettre);
 }
 
 int piloteSerieUSB_Bras_attendLaFinDeLEcriture(void)
 {
-  return (int)tcdrain(piloteSerieUSB_fichier);
+  return (int)tcdrain(piloteSerieUSB_Bras_fichier);
 }
 
 int piloteSerieUSB_Bras_lit(char *Destination, unsigned char NombreMaximalDeLectures)
 {
-  int retour = read(piloteSerieUSB_fichier, Destination, NombreMaximalDeLectures);  
-  tcflush(piloteSerieUSB_fichier, TCIFLUSH);  
+  int retour = read(piloteSerieUSB_Bras_fichier, Destination, NombreMaximalDeLectures);  
+  tcflush(piloteSerieUSB_Bras_fichier, TCIFLUSH);  
   return retour;
 }

@@ -13,6 +13,12 @@
 #include "piloteSerieUSB_Bras.h"
 #include "piloteSerieUSB_Balance.h"
 #include "interfaceUArm.h"
+#include "processusBras.h"
+
+#include "piloteSerieUSB_Bras.c"
+#include "piloteSerieUSB_Balance.c"
+#include "interfaceUArm.c"
+#include "processusBras.c"
 
 //Definitions privees
 //pas de definitions privees
@@ -27,7 +33,11 @@ void main_termine(void);
 //Definitions de fonctions privees:
 int main_initialise(void)
 {
-  if (piloteSerieUSB_initialise() != 0)
+  if (piloteSerieUSB_Bras_initialise() != 0)
+  {
+    return -1;
+  }
+  if (piloteSerieUSB_Balance_initialise() != 0)
   {
     return -1;
   }
@@ -40,7 +50,8 @@ int main_initialise(void)
 
 void main_termine(void)
 {
-  piloteSerieUSB_termine();
+  piloteSerieUSB_Bras_termine();
+  piloteSerieUSB_Balance_termine();
   interfaceUArm_termine();
 }
 //Definitions de variables publiques:
@@ -54,102 +65,13 @@ int main(int argc,char** argv)
 		printf("main_initialise: erreur\n");
     return 0;
   }
-	char cLecture[25];
-  int retour = 0;
-
-	retour = interfaceUArm_BougePosition(200,25,25);
-  while(cLecture[8] != '2' && cLecture[9] != '0' && cLecture[10] != '0')
-  {
-    retour = interfaceUArm_DemandePosition(); 
-    piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-    printf(cLecture);
-    printf("\n");
-  }
-
-  cLecture[8] = '0'; 
-  cLecture[9] = '0';
-  cLecture[10] = '0';
-  interfaceUArm_BougePosition(250,25,25);
-  sleep(1);
-
-  interfaceUArm_DemandePosition(); 
-  piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-  while(cLecture[8] != '2' && cLecture[9] != '5' && cLecture[10] != '0')
-  {
-    retour = interfaceUArm_DemandePosition(); 
-    piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-    printf(cLecture);
-    printf("\n");
-  }
-
-  cLecture[8] = '0'; 
-  cLecture[9] = '0';
-  cLecture[10] = '0';
-  interfaceUArm_BougePosition(300,0,0);
-  sleep(1);
-
-  interfaceUArm_DemandePosition(); 
-  piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-  while(cLecture[8] != '3' && cLecture[9] != '0' && cLecture[10] != '0')
-  {
-    retour = interfaceUArm_DemandePosition(); 
-    piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-    printf(cLecture);
-    printf("\n");
-    
-  }
-  cLecture[8] = '0'; 
-  cLecture[9] = '0';
-  cLecture[10] = '0';
-  /*
-  while(cLecture[0] != '$')
-  {
-    cLecture[0] = 0;
-    piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-    printf(cLecture);
-  }*/
-  
- // piloteSerieUSB_lit(cLecture,(sizeof(cLecture)-1));
-
-  //printf("\n1e lecture\n");
-  //printf(cLecture);
-  //printf("\nwhile\n");
-
-  //while((/*cLecture[0] != '$' && cLecture[1] != '1' && */cLecture[2] != '5'))
-  //{
-  //  for(int i = 0; i++; i=25)
-  //  {
-  //    cLecture[i] = '0';
-  //  }
-  //  piloteSerieUSB_lit(cLecture, (sizeof(cLecture)-1));  
-  //}
-
-  //printf("\n2e lecture\n");
-  //printf(cLecture);
-  
-  //sleep(3);
-  
-  
-  //for(int i = 0; i++; i=25)
-  //{
-  //  cLecture[i] = '0';
-  //}
-  //printf("\n2e while\n");
-
-  /*while(/*cLecture[0] != '$' && cLecture[1] != '2' && *//*cLecture[2] != '8' )
-  {
-    for(int i = 0; i++; i=25)
-    {
-      cLecture[i] = '0';
-    }*/
-  //  piloteSerieUSB_lit(cLecture, (sizeof(cLecture)-1));  
- //   printf("3e lecture\n");
- //   printf(cLecture);
-  //}*/
- // piloteSerieUSB_lit(cLecture, (sizeof(cLecture)-1));  
- // printf("\n4e lecture\n");
-//  printf(cLecture);
-
+	
+  //int retour = 0;
+  //processusBras_TrouvePoid();
+  //processusBras_PrendrePoid('o');
+  processusBras_TrouvePoid();
+  processusBras_PrendrePoid('m');
+                              
 	main_termine();
   return EXIT_SUCCESS;
 }
