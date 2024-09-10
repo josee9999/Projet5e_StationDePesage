@@ -12,14 +12,19 @@
 
 #include "piloteSerieUSB_Bras.h"
 #include "piloteSerieUSB_Balance.h"
+#include "piloteI2C.h"
 #include "interfaceUArm.h"
 #include "interfaceBalance.h"
+#include "interfaceVL6180x.h"
 #include "processusBras.h"
+
 
 #include "piloteSerieUSB_Bras.c"
 #include "piloteSerieUSB_Balance.c"
+#include "piloteI2C.c"
 #include "interfaceUArm.c"
 #include "interfaceBalance.c"
+#include "interfaceVL6180x.c"
 #include "processusBras.c"
 
 //Definitions privees
@@ -39,11 +44,19 @@ int main_initialise(void)
   {
     return -1;
   }
+  if(piloteI2C_initialise() != 0)
+  {
+    return -1;
+  }
   if (piloteSerieUSB_Balance_initialise() != 0)
   {
     return -1;
   }
   if (interfaceUArm_initialise() != 0)
+  {
+    return -1;
+  }
+  if(interfaceVL6810x_initialise() != 0)
   {
     return -1;
   }
@@ -111,7 +124,7 @@ int main(int argc,char** argv)
     while (1)
     {      
       fPoidsEnfant = -1;
-      
+
       fPoidsEnfant = interfaceBalance_LecturePoids(piloteSerieUSB_Balance_fichier);
       fPoidsEnfant = interfaceBalance_ValiderValeur(fPoidsEnfant);
 
@@ -130,6 +143,14 @@ int main(int argc,char** argv)
 	
   while(1)
   {
+    /*processusBras_TrouvePoid();
+    float fDistance = 0;
+    while(1)
+    {
+      printf(".");
+      interfaceVL6180x_litUneDistance(&fDistance);
+      printf("%f  \n",fDistance);
+    }*/
     char cCouleurPoids[1];
     printf("couleur poids : ");//pour test
     scanf("%s", cCouleurPoids);//pour test

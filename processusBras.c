@@ -8,7 +8,7 @@
 #include "piloteSerieUSB_Bras.h"
 #include "interfaceUArm.h"
 #include "processusBras.h"
-
+#include "interfaceVL6180x.h"
 
 //Definitions privees
 
@@ -25,40 +25,63 @@ void processusBras_Attente1s(void)
 }
 
 //Definitions de variables publiques:
-
+float fDistance = 0;
 
 //Definitions de fonctions publiques:
 
 void processusBras_TrouvePoid(void)
 {
-  //A CHANGER QUAND CAPTEUR DE DISTANCE FAIT !!!!!
-
-  interfaceUArm_BougePosition(200,25,25);
+  int iX = 250;
+  int iY = 10;
+  int iZ = 165;
+  char cTrouve = 0;
+  char bufferX[3];
+  interfaceUArm_BougePosition(iX, iY, iZ);
   do
   {
+    cLecture[8] = '0'; 
+    cLecture[9] = '0';
+    cLecture[10] = '0';
     interfaceUArm_DemandePosition(); 
     piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-    //printf(cLecture);
-    //printf("\n");
-  } while(cLecture[8] != '2' ||cLecture[9] != '0' || cLecture[10] != '0');
+  } while(cLecture[8] != '2' ||cLecture[9] != '5' || cLecture[10] != '0');
 
-  processusBras_Attente1s();
-  interfaceUArm_BougePosition(250,25,25);
-
-  do
+  while(cTrouve == 0)
   {
-    interfaceUArm_DemandePosition(); 
-    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-  } while(cLecture[8] != '2' || cLecture[9] != '5' || cLecture[10] != '0');
+    interfaceVL6180x_litUneDistance(&fDistance);
+    printf("%2.1f\n",fDistance);
+    if(fDistance > 7.5) //pas sur le camion
+    {
 
-  processusBras_Attente1s();
-  interfaceUArm_BougePosition(300,0,0);
+    }
+    else if(fDistance > 3.9) //pas sur le bloc
+    {
 
-  do
-  {
-    interfaceUArm_DemandePosition(); 
-    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-  } while(cLecture[8] != '3' || cLecture[9] != '0' || cLecture[10] != '0');
+    }
+    else
+    {
+      iX += 15;
+      interfaceUArm_BougePosition(iX, iY, iZ);
+      do
+      {
+        interfaceUArm_DemandePosition(); 
+        piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+        sprintf(bufferX, "%d", iX);
+      } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
+
+      iZ-=15;
+      interfaceUArm_BougePosition(iX, iY, iZ);
+      do
+      {
+        cLecture[8] = '0'; 
+        cLecture[9] = '0';
+        cLecture[10] = '0';
+        interfaceUArm_DemandePosition(); 
+        piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+        sprintf(bufferX, "%d", iX);
+      } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
+    }
+  }
 }
 
 void processusBras_PrendrePoid(char couleur)

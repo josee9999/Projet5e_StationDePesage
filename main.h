@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 //DEFINITIONS REQUISES PAR LE PROGRAMME:
 
@@ -15,7 +16,11 @@
 
 //INFORMATION PUBLIQUE:
 //Definitions publiques:
-//pas de definitions publiques
+#define I2C_FICHIER "/dev/i2c-1" // fichier Linux representant le BUS #2
+#define I2C_ADRESSE 0x29 // adresse du Device I2C MPU-9250 (motion tracking)
+// Registre et ID du modèle attendu pour le capteur VL6180X
+#define VL6180X_ID_REGISTRE 0x000 
+#define VL6180X_ID 0xb4         
 
 //Fonctions publiques:
 int main(int argc,char** argv);

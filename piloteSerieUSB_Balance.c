@@ -21,6 +21,10 @@
 #define PILOTESERIEUSB_USB4 "/dev/ttyUSB4"
 #define PILOTESERIEUSB_USB5 "/dev/ttyUSB5"
 #define PILOTESERIEUSB_USB6 "/dev/ttyUSB6"
+#define PILOTESERIEUSB_USB7 "/dev/ttyUSB7"
+#define PILOTESERIEUSB_USB8 "/dev/ttyUSB8"
+#define PILOTESERIEUSB_USB9 "/dev/ttyUSB9"
+#define PILOTESERIEUSB_USB10 "/dev/ttyUSB10"
 
 //Declarations de fonctions privees:
 //pas de fonctions privees
@@ -60,8 +64,24 @@ int piloteSerieUSB_Balance_initialise(void)
               piloteSerieUSB_Balance_fichier = open(PILOTESERIEUSB_USB6, O_RDWR | O_NOCTTY | O_NDELAY);
               if (piloteSerieUSB_Balance_fichier == -1)
               {
-                perror("Erreur! Ouverture de port (Balance)");
-                return EXIT_FAILURE;
+                piloteSerieUSB_Balance_fichier = open(PILOTESERIEUSB_USB7, O_RDWR | O_NOCTTY | O_NDELAY);
+                if (piloteSerieUSB_Balance_fichier == -1)
+                {
+                  piloteSerieUSB_Balance_fichier = open(PILOTESERIEUSB_USB8, O_RDWR | O_NOCTTY | O_NDELAY);
+                  if (piloteSerieUSB_Balance_fichier == -1)
+                  {
+                    piloteSerieUSB_Balance_fichier = open(PILOTESERIEUSB_USB9, O_RDWR | O_NOCTTY | O_NDELAY);
+                    if (piloteSerieUSB_Balance_fichier == -1)
+                    {
+                      piloteSerieUSB_Balance_fichier = open(PILOTESERIEUSB_USB10, O_RDWR | O_NOCTTY | O_NDELAY);
+                      if (piloteSerieUSB_Balance_fichier == -1)
+                      {
+                        perror("Erreur! Ouverture de port (Balance)");
+                        return EXIT_FAILURE;
+                      }
+                    }
+                  }
+                }
               }
             }
           }

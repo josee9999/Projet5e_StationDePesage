@@ -21,7 +21,10 @@
 #define PILOTESERIEUSB_TTY4 "/dev/ttyACM4"
 #define PILOTESERIEUSB_TTY5 "/dev/ttyACM5"
 #define PILOTESERIEUSB_TTY6 "/dev/ttyACM6"
-
+#define PILOTESERIEUSB_TTY7 "/dev/ttyACM7"
+#define PILOTESERIEUSB_TTY8 "/dev/ttyACM8"
+#define PILOTESERIEUSB_TTY9 "/dev/ttyACM9"
+#define PILOTESERIEUSB_TTY10 "/dev/ttyACM10"
 
 //Declarations de fonctions privees:
 //pas de fonctions privees
@@ -43,32 +46,42 @@ int piloteSerieUSB_Bras_initialise(void)
   piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY0, O_RDWR | O_NOCTTY | O_NDELAY);
   if (piloteSerieUSB_Bras_fichier == -1)
   {
-    piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY1, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+    piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY1, O_RDWR | O_NOCTTY | O_NDELAY);    
     if (piloteSerieUSB_Bras_fichier == -1)
     {
-      piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY2, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+      piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY2, O_RDWR | O_NOCTTY | O_NDELAY);    
       if (piloteSerieUSB_Bras_fichier == -1)
       {
-        piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY3, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+        piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY3, O_RDWR | O_NOCTTY | O_NDELAY);    
         if (piloteSerieUSB_Bras_fichier == -1)
         {
-          piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY4, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+          piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY4, O_RDWR | O_NOCTTY | O_NDELAY);    
           if (piloteSerieUSB_Bras_fichier == -1)
           {
-            piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY5, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+            piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY5, O_RDWR | O_NOCTTY | O_NDELAY);    
             if (piloteSerieUSB_Bras_fichier == -1)
             {
-              piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY6, O_RDWR | O_NOCTTY | O_NDELAY);
-    
+              piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY6, O_RDWR | O_NOCTTY | O_NDELAY);    
               if (piloteSerieUSB_Bras_fichier == -1)
               {
-                perror("Erreur! Ouverture de port (Bras)");
-                return EXIT_FAILURE;
+                piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY7, O_RDWR | O_NOCTTY | O_NDELAY);
+                if (piloteSerieUSB_Bras_fichier == -1)
+                {
+                  piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY8, O_RDWR | O_NOCTTY | O_NDELAY);
+                  if (piloteSerieUSB_Bras_fichier == -1)
+                  {
+                    piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY9, O_RDWR | O_NOCTTY | O_NDELAY);
+                    if (piloteSerieUSB_Bras_fichier == -1)
+                    {
+                      piloteSerieUSB_Bras_fichier = open(PILOTESERIEUSB_TTY10, O_RDWR | O_NOCTTY | O_NDELAY);
+                      if (piloteSerieUSB_Bras_fichier == -1)
+                      {
+                        perror("Erreur! Ouverture de port (Bras)");
+                        return EXIT_FAILURE;
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -76,7 +89,7 @@ int piloteSerieUSB_Bras_initialise(void)
       }
     }
   }
-  
+
   struct termios SerialPortSettings; // Create the structure 
   tcgetattr(piloteSerieUSB_Bras_fichier, &SerialPortSettings); // Get the current attributes of the Serial port
 
