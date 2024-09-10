@@ -25,63 +25,132 @@ void processusBras_Attente1s(void)
 }
 
 //Definitions de variables publiques:
-float fDistance = 0;
+
 
 //Definitions de fonctions publiques:
 
-void processusBras_TrouvePoid(void)
+void processusBras_TrouvePoid(char couleur)
 {
-  int iX = 250;
-  int iY = 10;
-  int iZ = 165;
-  char cTrouve = 0;
+  float fDistance = 0;
+  float fDistanceP = 100;
+  float fDistanceG = 0;
+  int iX = 175;
+  int iY = -175;
+  int iZ = 145;
+  char cTrouveBloc = 0;
   char bufferX[3];
+
   interfaceUArm_BougePosition(iX, iY, iZ);
+  processusBras_Attente1s();
+  
   do
   {
-    cLecture[8] = '0'; 
-    cLecture[9] = '0';
-    cLecture[10] = '0';
+    printf("1e move");//pour test
     interfaceUArm_DemandePosition(); 
     piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-  } while(cLecture[8] != '2' ||cLecture[9] != '5' || cLecture[10] != '0');
+    sprintf(bufferX, "%d", iX);
+  } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
 
-  while(cTrouve == 0)
+  do
   {
-    interfaceVL6180x_litUneDistance(&fDistance);
-    printf("%2.1f\n",fDistance);
-    if(fDistance > 7.5) //pas sur le camion
+    printf("do\n");//pour test
+    if(iY == 150)
     {
-
-    }
-    else if(fDistance > 3.9) //pas sur le bloc
-    {
-
+      iY =-150;
     }
     else
     {
-      iX += 15;
-      interfaceUArm_BougePosition(iX, iY, iZ);
-      do
-      {
-        interfaceUArm_DemandePosition(); 
-        piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-        sprintf(bufferX, "%d", iX);
-      } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
-
-      iZ-=15;
-      interfaceUArm_BougePosition(iX, iY, iZ);
-      do
-      {
-        cLecture[8] = '0'; 
-        cLecture[9] = '0';
-        cLecture[10] = '0';
-        interfaceUArm_DemandePosition(); 
-        piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
-        sprintf(bufferX, "%d", iX);
-      } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
+      iY = 150;
     }
-  }
+        
+    interfaceUArm_BougePosition(iX, iY, iZ);
+    processusBras_Attente1s();
+    do
+    {
+      printf("2e move");//pour test
+      interfaceUArm_DemandePosition(); 
+      piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+      interfaceVL6180x_litUneDistance(&fDistance);
+
+      if(fDistance<fDistanceP)
+      {
+        fDistanceP = fDistance;
+      }
+
+      if(fDistance>fDistanceG)
+      {
+        fDistanceG = fDistance;
+      }
+
+      sprintf(bufferX, "%d", iX);
+      printf(" attente\n");//pour test
+      printf("%c%c%c vs ",cLecture[8],cLecture[9],cLecture[10]);//pour test
+      printf("%c%c%c\n",bufferX[0],bufferX[1],bufferX[2]);//pour test
+    } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
+
+    if((fDistanceP < 1.5) && (couleur = 'm'))
+    {
+      cTrouveBloc = 1;
+      printf("if\n");//pour test
+    }
+    else if((fDistanceP < 2.5) && (couleur = 'o'))
+    {
+      cTrouveBloc = 1;
+      printf("if\n");//pour test
+    }
+    else 
+    {
+      iX += 5;
+      printf("else\n");//pour test
+    }
+
+    printf("P : %2.2f\n",fDistanceP); //pour test
+    printf("G : %2.2f\n",fDistanceG); //pour test
+
+  } while(cTrouveBloc != 1);
+
+  printf("\nbloc trouve en x\n");
+  cTrouveBloc = 0;
+  iY = -150;
+
+  processusBras_Attente1s();
+  interfaceUArm_BougePosition(iX, iY, iZ);
+  
+  do
+  {
+    printf("1e move Y");//pour test
+    interfaceUArm_DemandePosition(); 
+    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+    sprintf(bufferX, "%d", iX);
+  } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);   
+
+  iY += 5;
+  do{
+    interfaceUArm_BougePosition(iX, iY, iZ);
+    processusBras_Attente1s();
+    do
+    {
+      printf("2e move");//pour test
+      interfaceUArm_DemandePosition(); 
+      piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+      interfaceVL6180x_litUneDistance(&fDistance);
+      if(fDistance == fDistanceP)
+      {
+        cTrouveBloc = 1;
+      }
+      sprintf(bufferX, "%d", iX);
+      printf(" attente\n");//pour test
+      printf("%c%c%c vs ",cLecture[8],cLecture[9],cLecture[10]);//pour test
+      printf("%c%c%c\n",bufferX[0],bufferX[1],bufferX[2]);//pour test
+    } while(cLecture[8] != bufferX[0] ||cLecture[9] != bufferX[1] || cLecture[10] != bufferX[2]);
+
+    if(cTrouveBloc = 0)
+    {
+      printf("if\n");
+      iY += 5;
+    }
+  } while(cTrouveBloc != 1);
+  printf("\nbloc trouve en x\n");
 }
 
 void processusBras_PrendrePoid(char couleur)

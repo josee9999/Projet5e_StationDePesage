@@ -18,7 +18,7 @@
 //pas de definitions publiques
 
 //Fonctions publiques:
-void processusBras_TrouvePoid(void);
+void processusBras_TrouvePoid(char couleur);
 void processusBras_PrendrePoid(char couleur);
 void processusBras_AllerBalance(void);
 void processusBras_DiscarterOrange(void);

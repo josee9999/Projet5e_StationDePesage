@@ -98,13 +98,13 @@ int main(int argc,char** argv)
       {
         if(strcmp(buffer, "o") == 0)
         {
-          processusBras_TrouvePoid();
-          processusBras_PrendrePoid('o');
+          processusBras_TrouvePoid('o');
+          //processusBras_PrendrePoid('o');
         }
         else if(strcmp(buffer, "m") == 0)
         {
-          processusBras_TrouvePoid();
-          processusBras_PrendrePoid('m');
+          processusBras_TrouvePoid('m');
+          //processusBras_PrendrePoid('m');
         }
         else if(strcmp(buffer, "ApresBalance") == 0)
         {
@@ -143,14 +143,6 @@ int main(int argc,char** argv)
 	
   while(1)
   {
-    /*processusBras_TrouvePoid();
-    float fDistance = 0;
-    while(1)
-    {
-      printf(".");
-      interfaceVL6180x_litUneDistance(&fDistance);
-      printf("%f  \n",fDistance);
-    }*/
     char cCouleurPoids[1];
     printf("couleur poids : ");//pour test
     scanf("%s", cCouleurPoids);//pour test
@@ -172,7 +164,6 @@ int main(int argc,char** argv)
       {
         read(pipeBalance[0], &fPoidsParent, sizeof(fPoidsParent));
       } while((fPoidsParent < 30) || (fPoidsParent > 100));
-      
       
       printf("Le poids recu de la balance est : %2.2f \n",fPoidsParent);//pour test
 
