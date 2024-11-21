@@ -10,7 +10,8 @@
 //pas de dependances materielles
 
 //Dependances logicielles:
-#define PILOTESERIEUSB_BAUDRATE_AVEC_B_AU_DEBUT   B115200
+#define PILOTESERIEUSB_BRAS_BAUDRATE_AVEC_B_AU_DEBUT       B115200
+#define PILOTESERIEUSB_BALANCE_BAUDRATE_AVEC_B_AU_DEBUT    B9600
 
 //INFORMATION PUBLIQUE:
 //Definitions publiques:

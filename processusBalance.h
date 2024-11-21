@@ -1,11 +1,8 @@
-#ifndef INTERFACEBALANCE_H
-#define INTERFACEBALANCE_H
-
-//MODULE: 
-//DESCRIPTION: 
+#ifndef PROCESSUSBALANCE_H
+#define PROCESSUSBALANCE_H
 
 //HISTORIQUE:
-// 2018-10-11, Yves Roy, creation
+// 21/11/2024, Josee Girard, creation
 
 //DEFINITIONS REQUISES PAR LE MODULE:
 //Dependances materielles
@@ -14,14 +11,14 @@
 
 //Dependances logicielles
 //(copiez et adaptez ce qui suit dans "main.h")
+//pas de dependances logicielles
 
 //INFORMATION PUBLIQUE:
 //Definitions publiques:
 //pas de definitions publiques
 
 //Fonctions publiques:
-float interfaceBalance_LecturePoids(int fd);
-float interfaceBalance_ValiderValeur(float fPoids, char cUnitePoids);
+
 
 //Variables publiques:
 //pas de variables publiques

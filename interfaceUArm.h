@@ -24,6 +24,8 @@ int interfaceUArm_demarreVentouse(void);
 int interfaceUArm_arreteVentouse(void);
 int interfaceUArm_recoitUneReponse(char *cReponse, unsigned char ucLongueurMaximale);
 int interfaceUArm_BougePosition(int iX, int iY, int iZ);
+int interfaceUArm_BougePosition_FeedbackPossible(int iNumero, int iX, int iY, int iZ);
+int interfaceUArm_DemandePosition(void);
 
 //Variables publiques:
 //pas de variables publiques
