@@ -5,7 +5,7 @@
 
 //INCLUSIONS
 #include "main.h"
-#include "piloteSerieUSB.h"
+#include "piloteSerieUSB_Bras.h"
 #include "interfaceUArm.h"
 
 //Definitions privees
@@ -23,19 +23,19 @@ unsigned char interfaceUArm_reponse[INTERFACEUARM_LONGUEUR_MAXIMALE_DES_REPONSES
 //Definitions de fonctions privees:
 int interfaceUArm_ecritUneCommande(char *Commande, unsigned char Longueur)
 {
-    int retour;
-    retour = piloteSerieUSB_ecrit(Commande, Longueur);
-    if (retour != (int)Longueur)
-    {
-        return -1;
-    }
-    piloteSerieUSB_attendLaFinDeLEcriture();
-    return retour;
+  int retour;
+  retour = piloteSerieUSB_ecrit(Commande, Longueur);
+  if (retour != (int)Longueur)
+  {
+    return -1;
+  }
+  piloteSerieUSB_attendLaFinDeLEcriture();
+  return retour;
 }
 
 int interfaceUArm_recoitUneReponse(char *cReponse, unsigned char ucLongueurMaximale)
 {
-    return piloteSerieUSB_lit(cReponse, ucLongueurMaximale);  
+	return piloteSerieUSB_lit(cReponse, ucLongueurMaximale);  
 }
 
 //Definitions de variables publiques:
@@ -44,7 +44,7 @@ int interfaceUArm_recoitUneReponse(char *cReponse, unsigned char ucLongueurMaxim
 //Definitions de fonctions publiques:
 int interfaceUArm_initialise(void)
 {
-  return 0;
+	return 0;
 }
 
 int interfaceUArm_termine(void)
@@ -59,12 +59,27 @@ int interfaceUArm_demarreVentouse(void)
 
 int interfaceUArm_arreteVentouse(void)
 {
-  return interfaceUArm_ecritUneCommande("M2231 V1\n", 9);
+  return interfaceUArm_ecritUneCommande("M2231 V0\n", 9);
 }
 
 int interfaceUArm_BougePosition(int iX, int iY, int iZ)
 {
-    unsigned char ucPosition[64];
-    sprintf(ucPosition, "G0 X%d Y%d Z%d F8000\n", iX, iY, iZ); 
-    return interfaceUArm_ecritUneCommande(ucPosition, 24);
+  char cPosition[30];
+  sprintf(cPosition, "G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); 
+  printf("G0 X%d Y%d Z%d F10000\n", iX, iY, iZ);
+  return interfaceUArm_ecritUneCommande(cPosition, 29);
 }
+
+int interfaceUArm_BougePosition_FeedbackPossible(int iNumero, int iX, int iY, int iZ)
+{
+  char cPosition[32];
+  sprintf(cPosition, "#%d G0 X%d Y%d Z%d F10000\n",iNumero, iX, iY, iZ); 
+  printf("\n#%d G0 X%d Y%d Z%d F10000\n",iNumero, iX, iY, iZ); 
+  return interfaceUArm_ecritUneCommande(cPosition, (sizeof(cPosition)-1));
+}
+
+int interfaceUArm_DemandePosition(void)
+{
+  return interfaceUArm_ecritUneCommande("#10 P2220\n", 10);
+}
+
