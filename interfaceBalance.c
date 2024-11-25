@@ -19,7 +19,7 @@
 //pas de fonctions privees
 
 //Definitions de variables privees:
-float fConvertion = 28.34952;
+//float fConvertion = 28.34952;
 
 //Definitions de fonctions privees:
 //pas de fonctions privees
@@ -47,18 +47,16 @@ float interfaceBalance_LecturePoids(int fd)
 		}
 	}
 	fPoids = atof(bufferPoids);
+    
     return fPoids;
 }
 
-float interfaceBalance_ValiderValeur(float fPoids, char cUnitePoids)
+float interfaceBalance_ValiderValeur(float fPoids)
 {
     if(fPoids < 30 && fPoids > 100)
     {
         fPoids = -1;
     }
-    else if(cUnitePoids == 'O')
-    {
-        fPoids = fPoids/fConvertion;
-    }
+
     return fPoids;
 }

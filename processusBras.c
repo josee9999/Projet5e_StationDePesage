@@ -173,3 +173,38 @@ void processusBras_DiscarterOrange(void)
     piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
   } while(cLecture[8] != '9' || cLecture[9] != '8' );
 }
+
+void processusBras_DiscarterMetal(void)
+{
+  processusBras_Attente1s();
+	interfaceUArm_BougePosition(76,-250,105);
+
+  do
+  {
+    interfaceUArm_DemandePosition(); 
+    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+  } while(cLecture[8] != '7' || cLecture[9] != '6');
+
+  interfaceUArm_demarreVentouse();
+
+  processusBras_Attente1s();
+	interfaceUArm_BougePosition(76,-250,150);
+
+  do
+  {
+    interfaceUArm_DemandePosition(); 
+    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+  } while(cLecture[8] != '7' || cLecture[9] != '6');
+
+  processusBras_Attente1s();
+	interfaceUArm_BougePosition(200,25,25);
+
+  do
+  {
+    interfaceUArm_DemandePosition(); 
+    piloteSerieUSB_Bras_lit(cLecture,(sizeof(cLecture)-1));
+  } while(cLecture[8] != '2' ||cLecture[9] != '0' || cLecture[10] != '0');
+
+  processusBras_DiscarterOrange();
+
+}

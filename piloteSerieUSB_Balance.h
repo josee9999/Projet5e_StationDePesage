@@ -30,6 +30,6 @@ int piloteSerieUSB_Balance_attendLaFinDeLEcriture(void);
 int piloteSerieUSB_Balance_lit(char *Destination, unsigned char NombreMaximalDeLectures);
 
 //Variables publiques:
-//pas de variables publiques
+int piloteSerieUSB_Balance_fichier;
 
 #endif

@@ -21,7 +21,7 @@
 
 //Fonctions publiques:
 float interfaceBalance_LecturePoids(int fd);
-float interfaceBalance_ValiderValeur(float fPoids, char cUnitePoids);
+float interfaceBalance_ValiderValeur(float fPoids);
 
 //Variables publiques:
 //pas de variables publiques

@@ -66,7 +66,7 @@ int interfaceUArm_BougePosition(int iX, int iY, int iZ)
 {
   char cPosition[30];
   sprintf(cPosition, "G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); 
-  printf("G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); //A enlever
+  //printf("G0 X%d Y%d Z%d F10000\n", iX, iY, iZ); //A enlever
   return interfaceUArm_ecritUneCommande(cPosition, 29);
 }
 

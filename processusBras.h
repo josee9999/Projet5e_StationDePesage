@@ -18,9 +18,13 @@
 //pas de definitions publiques
 
 //Fonctions publiques:
-
+void processusBras_TrouvePoid(void);
+void processusBras_PrendrePoid(char couleur);
+void processusBras_AllerBalance(void);
+void processusBras_DiscarterOrange(void);
+void processusBras_DiscarterMetal(void);
 
 //Variables publiques:
-//pas de variables publiques
+char cLecture[32];
 
 #endif
